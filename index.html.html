@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>La Baguettería — Menú Digital</title>
+<meta name="description" content="Menú digital de La Baguettería, Posadas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --gold: #F2AC0E;
+    --gold-dark: #C9890A;
+    --gold-soft: #FBDD98;
+    --espresso: #2B1B12;
+    --espresso-soft: #4A342A;
+    --cream: #FBF3E7;
+    --cream-soft: #F3E6D2;
+    --leaf: #4A5D3A;
+    --rust: #B5502B;
+    --line: rgba(43,27,18,0.12);
+    --max: 640px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--espresso);
+    font-family:'Manrope', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 22px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:92svh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:80px 24px 40px;
+    overflow:hidden;
+    background:
+      radial-gradient(120% 90% at 50% 0%, #FCE7B8 0%, var(--cream) 60%),
+      var(--cream);
+  }
+
+  .cup{
+    width:min(150px, 34vw);
+    height:auto;
+    margin-bottom:6px;
+    position:relative;
+    z-index:2;
+  }
+
+  .steam{position:absolute; left:0; top:0; width:100%; height:100%; overflow:visible;}
+  .steam path{
+    fill:none;
+    stroke:rgba(74,52,42,0.35);
+    stroke-width:5;
+    stroke-linecap:round;
+    stroke-dasharray:60 140;
+    animation: rise 4.5s ease-in-out infinite;
+  }
+  .steam path:nth-child(2){animation-delay:.9s; stroke:rgba(74,52,42,0.22);}
+  .steam path:nth-child(3){animation-delay:1.8s; stroke:rgba(74,52,42,0.18);}
+
+  @keyframes rise{
+    0%{ stroke-dashoffset:60; opacity:0; transform:translateY(0);}
+    15%{opacity:1;}
+    80%{opacity:0;}
+    100%{ stroke-dashoffset:-200; opacity:0; transform:translateY(-14px);}
+  }
+
+  .logo-mark{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(2.4rem, 10vw, 3.8rem);
+    line-height:1;
+    color:var(--espresso);
+    margin:0 0 18px;
+    letter-spacing:-0.01em;
+    opacity:0;
+    animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .35s forwards;
+  }
+  .logo-mark em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--gold-dark);
+  }
+
+  .logo-mark-img{
+    width:min(420px, 80vw);
+    height:auto;
+    margin:0 0 18px;
+    opacity:0;
+    animation: logoReveal .9s cubic-bezier(.2,.7,.2,1) .3s forwards, logoGlow 3.5s ease-in-out 1.3s infinite;
+  }
+  @keyframes logoReveal{
+    from{ opacity:0; transform:translateY(18px) scale(0.94); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+  @keyframes logoGlow{
+    0%, 100%{ filter:drop-shadow(0 0 0px rgba(242,172,14,0)); }
+    50%{ filter:drop-shadow(0 0 12px rgba(242,172,14,0.4)); }
+  }
+
+  .eyebrow-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    letter-spacing:.02em;
+    color:var(--espresso-soft);
+    background:rgba(242,172,14,0.18);
+    border:none;
+    padding:7px 16px;
+    border-radius:100px;
+    margin-bottom:18px;
+    opacity:0;
+    animation: fadeIn .8s ease .2s forwards;
+  }
+  .eyebrow-tag svg{width:14px;height:14px;}
+
+  .tagline{
+    font-size:clamp(1rem, 3.6vw, 1.15rem);
+    color:var(--espresso-soft);
+    max-width:400px;
+    margin:0 auto 30px;
+    line-height:1.5;
+    opacity:0;
+    animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .55s forwards;
+  }
+
+  .cta-row{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    opacity:0;
+    animation: fadeUp .9s cubic-bezier(.2,.7,.2,1) .75s forwards;
+  }
+
+  .btn{
+    font-family:'Manrope', sans-serif;
+    font-weight:700;
+    font-size:15px;
+    padding:14px 26px;
+    border-radius:100px;
+    border:none;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease;
+  }
+  .btn:active{transform:scale(.96);}
+  .btn-primary{
+    background:var(--espresso);
+    color:var(--cream);
+    box-shadow:0 8px 22px -8px rgba(43,27,18,0.55);
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 12px 26px -8px rgba(43,27,18,0.6);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--espresso);
+    border:1.5px solid rgba(43,27,18,0.25);
+  }
+  .btn-ghost:hover{border-color:var(--espresso);}
+
+  @keyframes fadeIn{to{opacity:1;}}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);}}
+
+  /* ---------- ICON DIVIDER ---------- */
+  .icon-divider{
+    background:var(--cream);
+    padding:18px 22px 6px;
+    display:flex;
+    justify-content:center;
+  }
+  .icon-divider img{
+    width:min(520px, 100%);
+    height:auto;
+    opacity:0.88;
+  }
+
+  /* ---------- TAKEAWAY CTA ---------- */
+  .takeaway{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    background:var(--cream-soft);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:16px 20px;
+    margin:26px 0 6px;
+  }
+  .takeaway svg{
+    width:52px;
+    height:52px;
+    flex:0 0 auto;
+  }
+  .takeaway-text{flex:1; min-width:0;}
+  .takeaway-text h3{
+    font-family:'Fraunces';
+    font-weight:600;
+    font-size:17px;
+    margin:0 0 3px;
+    color:var(--espresso);
+  }
+  .takeaway-text p{
+    font-size:13px;
+    color:var(--espresso-soft);
+    margin:0 0 10px;
+    line-height:1.4;
+  }
+  .takeaway-text .btn{
+    padding:9px 18px;
+    font-size:13px;
+  }
+
+  /* ---------- TICKER ---------- */
+  .ticker-band{
+    background:var(--espresso);
+    color:var(--gold-soft);
+    overflow:hidden;
+    padding:11px 0;
+    white-space:nowrap;
+    position:relative;
+  }
+  .ticker-track{
+    display:inline-flex;
+    gap:36px;
+    animation:scroll-left 26s linear infinite;
+    padding-left:36px;
+  }
+  .ticker-track span{
+    font-family:'Manrope';
+    font-weight:700;
+    font-size:13.5px;
+    letter-spacing:.03em;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .ticker-track span:before{content:"☕"; font-size:12px;}
+  @keyframes scroll-left{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+  }
+
+  /* ---------- NAV ---------- */
+  .nav-sticky{
+    position:sticky;
+    top:0;
+    z-index:40;
+    background:rgba(251,243,231,0.92);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-scroll{
+    display:flex;
+    gap:6px;
+    overflow-x:auto;
+    padding:14px 22px;
+    scrollbar-width:none;
+    max-width:var(--max);
+    margin:0 auto;
+  }
+  .nav-scroll::-webkit-scrollbar{display:none;}
+  .nav-pill{
+    flex:0 0 auto;
+    font-family:'Manrope';
+    font-weight:700;
+    font-size:14px;
+    padding:9px 17px;
+    border-radius:100px;
+    background:transparent;
+    color:var(--espresso-soft);
+    border:1.5px solid transparent;
+    cursor:pointer;
+    text-decoration:none;
+    transition:background .25s ease, color .25s ease, border-color .25s ease;
+  }
+  .nav-pill.active{
+    background:var(--espresso);
+    color:var(--cream);
+  }
+
+  /* ---------- MENU ---------- */
+  .menu-section{
+    padding:52px 0 8px;
+    scroll-margin-top:70px;
+  }
+  .section-head{
+    margin-bottom:22px;
+  }
+  .section-head .kicker{
+    font-family:'Manrope';
+    font-weight:700;
+    font-size:12.5px;
+    color:var(--leaf);
+    letter-spacing:.04em;
+  }
+  .section-head h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(1.7rem, 6vw, 2.1rem);
+    margin:0;
+  }
+
+  .section-photo{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+    border-radius:16px;
+    margin-bottom:20px;
+  }
+
+  .item-thumb{
+    width:64px;
+    height:64px;
+    border-radius:14px;
+    object-fit:cover;
+    flex:0 0 auto;
+    background:var(--cream-soft);
+  }
+
+  .item{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    padding:18px 0;
+    border-bottom:1px solid var(--line);
+    transition:padding-left .25s ease, background .25s ease;
+  }
+  .item:hover{background:rgba(242,172,14,0.06); padding-left:8px; border-radius:8px;}
+  .item:last-child{border-bottom:none;}
+
+  .item-main{flex:1; min-width:0;}
+  .item-name-row{display:flex; align-items:center; gap:9px; flex-wrap:wrap;}
+  .item-name{
+    font-family:'Manrope';
+    font-weight:800;
+    font-size:16.5px;
+    color:var(--espresso);
+  }
+  .badge{
+    font-family:'Manrope';
+    font-weight:700;
+    font-size:10.5px;
+    letter-spacing:.03em;
+    color:#fff;
+    background:var(--rust);
+    padding:3px 9px;
+    border-radius:100px;
+    white-space:nowrap;
+  }
+  .item-desc{
+    font-size:13.5px;
+    color:var(--espresso-soft);
+    line-height:1.45;
+    margin-top:4px;
+    max-width:340px;
+  }
+  .item-price{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:17px;
+    color:var(--gold-dark);
+    white-space:nowrap;
+    padding-top:2px;
+  }
+
+  /* ---------- STORY STRIP ---------- */
+  .story{
+    background:var(--cream-soft);
+    padding:46px 0 40px;
+    margin-top:20px;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .story-photo{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:18px;
+    margin-bottom:26px;
+  }
+  .story p{
+    font-family:'Fraunces';
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.1rem, 4.2vw, 1.35rem);
+    line-height:1.5;
+    color:var(--espresso);
+    margin:0;
+  }
+  .story .attrib{
+    font-family:'Manrope';
+    font-style:normal;
+    font-weight:700;
+    font-size:12.5px;
+    color:var(--espresso-soft);
+    margin-top:14px;
+    letter-spacing:.02em;
+  }
+  .story-illustration{
+    display:block;
+    width:min(210px, 60%);
+    height:auto;
+    margin:34px auto 0;
+    opacity:0.92;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--espresso);
+    color:var(--cream);
+    padding:48px 0 110px;
+    margin-top:16px;
+  }
+  footer .foot-brand{
+    font-family:'Fraunces';
+    font-weight:600;
+    font-size:1.7rem;
+    margin-bottom:8px;
+  }
+  footer .foot-brand em{
+    font-style:italic;
+    font-weight:500;
+    color:var(--gold);
+  }
+  footer .foot-tag{
+    color:var(--gold-soft);
+    font-size:13.5px;
+    margin-bottom:26px;
+  }
+  .foot-grid{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    font-size:14px;
+    color:rgba(251,243,231,0.85);
+    margin-bottom:28px;
+  }
+  .foot-grid div{display:flex; gap:10px; align-items:flex-start;}
+  .foot-grid svg{width:17px;height:17px;flex:0 0 auto;margin-top:1px;color:var(--gold);}
+
+  .social-row{display:flex; gap:10px; margin-bottom:30px;}
+  .social-row a{
+    width:40px;height:40px;
+    display:flex;align-items:center;justify-content:center;
+    border:1.5px solid rgba(251,243,231,0.25);
+    border-radius:100px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .social-row a:hover{border-color:var(--gold); transform:translateY(-2px);}
+  .social-row svg{width:18px;height:18px;}
+
+  .foot-bottom{
+    border-top:1px solid rgba(251,243,231,0.15);
+    padding-top:20px;
+    font-size:12px;
+    color:rgba(251,243,231,0.5);
+  }
+
+  /* ---------- FLOATING ACTIONS ---------- */
+  .float-actions{
+    position:fixed;
+    right:18px;
+    bottom:18px;
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:flex-end;
+  }
+  .fab{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    background:var(--gold);
+    color:var(--espresso);
+    font-family:'Manrope';
+    font-weight:800;
+    font-size:13.5px;
+    padding:13px 18px;
+    border-radius:100px;
+    border:none;
+    cursor:pointer;
+    box-shadow:0 10px 24px -8px rgba(43,27,18,0.45);
+    text-decoration:none;
+    transition:transform .2s ease;
+  }
+  .fab:active{transform:scale(.95);}
+  .fab svg{width:17px;height:17px;}
+  .fab.secondary{
+    background:var(--espresso);
+    color:var(--cream);
+  }
+
+  .toast{
+    position:fixed;
+    bottom:88px;
+    left:50%;
+    transform:translateX(-50%) translateY(10px);
+    background:var(--espresso);
+    color:var(--cream);
+    font-family:'Manrope';
+    font-weight:600;
+    font-size:13.5px;
+    padding:11px 20px;
+    border-radius:100px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:60;
+    white-space:nowrap;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* ---------- PRODUCT MODAL ---------- */
+  .item.has-photo{cursor:pointer;}
+  .item.has-photo .item-thumb{transition:transform .2s ease;}
+  .item.has-photo:hover .item-thumb{transform:scale(1.04);}
+
+  .product-modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+  }
+  .product-modal.open{display:flex;}
+
+  .modal-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(20,12,7,0.6);
+    animation:fadeIn .2s ease forwards;
+  }
+
+  .modal-sheet{
+    position:relative;
+    background:var(--cream);
+    width:100%;
+    max-width:640px;
+    max-height:90vh;
+    border-radius:24px 24px 0 0;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    animation:sheetUp .28s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes sheetUp{from{transform:translateY(40px); opacity:.5;} to{transform:translateY(0); opacity:1;}}
+
+  .modal-close{
+    position:absolute;
+    top:14px;
+    right:14px;
+    z-index:5;
+    width:36px;
+    height:36px;
+    border-radius:100px;
+    background:rgba(20,12,7,0.55);
+    color:#fff;
+    border:none;
+    font-size:20px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .modal-gallery{
+    display:flex;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    background:var(--espresso);
+  }
+  .modal-gallery::-webkit-scrollbar{display:none;}
+  .modal-gallery img{
+    width:100%;
+    flex:0 0 100%;
+    scroll-snap-align:start;
+    height:min(60vh, 380px);
+    object-fit:cover;
+  }
+
+  .modal-dots{
+    display:flex;
+    justify-content:center;
+    gap:6px;
+    padding:10px 0 0;
+  }
+  .modal-dots .dot{
+    width:6px;
+    height:6px;
+    border-radius:100px;
+    background:rgba(43,27,18,0.25);
+    transition:width .2s ease, background .2s ease;
+  }
+  .modal-dots .dot.active{background:var(--gold-dark); width:16px;}
+
+  .modal-info{padding:20px 24px 34px;}
+  .modal-info .kicker{
+    font-family:'Manrope';
+    font-weight:700;
+    font-size:12px;
+    color:var(--leaf);
+    letter-spacing:.04em;
+  }
+  .modal-name{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.5rem;
+    color:var(--espresso);
+    margin:4px 0 8px;
+  }
+  .modal-desc{
+    font-size:14.5px;
+    color:var(--espresso-soft);
+    line-height:1.55;
+    margin-bottom:16px;
+  }
+  .modal-price{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.4rem;
+    color:var(--gold-dark);
+  }
+
+  body.modal-open{overflow:hidden;}
+
+  @media (prefers-reduced-motion: reduce){
+    .steam path, .ticker-track, .logo-mark, .logo-mark-img, .tagline, .cta-row, .eyebrow-tag{animation:none !important; opacity:1 !important; transform:none !important;}
+  }
+
+  @media (min-width:520px){
+    .item-desc{max-width:400px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="steam" viewBox="0 0 200 200" aria-hidden="true">
+    <path d="M85 140 C 70 120, 100 100, 88 78 C 78 58, 100 46, 92 28" transform="translate(0,0)"/>
+    <path d="M100 140 C 85 120, 115 100, 103 78 C 93 58, 115 46, 107 28" transform="translate(0,0)"/>
+    <path d="M115 140 C 100 120, 130 100, 118 78 C 108 58, 130 46, 122 28" transform="translate(0,0)"/>
+  </svg>
+
+  <svg class="cup" viewBox="0 0 160 130" aria-hidden="true">
+    <ellipse cx="70" cy="34" rx="52" ry="10" fill="#4A342A" opacity="0.14"/>
+    <path d="M22 34 H118 L108 96 C106 108 96 116 84 116 H56 C44 116 34 108 32 96 Z" fill="#2B1B12"/>
+    <ellipse cx="70" cy="34" rx="48" ry="9" fill="#F2AC0E"/>
+    <path d="M118 42 C 142 42 142 78 120 80" fill="none" stroke="#2B1B12" stroke-width="7" stroke-linecap="round"/>
+  </svg>
+
+  <img class="logo-mark-img" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/logo.png" alt="La Baguettería">
+
+  <span class="eyebrow-tag">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+    Lun a dom · 8–13:30 y 16–21 h
+  </span>
+
+  <p class="tagline">Panadería artesanal, café de especialidad y los sándwiches de baguette que le dan nombre a la casa. Un proyecto familiar a metros del río, en la Costanera de Posadas.</p>
+
+  <div class="cta-row">
+    <a href="#calientes" class="btn btn-primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 8h14v6a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M7 3c-.5 1 .5 1.5 0 2.5M11 3c-.5 1 .5 1.5 0 2.5"/></svg>
+      Ver el menú
+    </a>
+    <a href="#" class="btn btn-ghost" id="whatsapp-hero">Pedir por WhatsApp</a>
+  </div>
+</section>
+
+
+<!-- TICKER -->
+<div class="ticker-band">
+  <div class="ticker-track" id="ticker">
+    <span>Panadería artesanal todos los días</span>
+    <span>Sandwiches de baguette, la casa de la especialidad</span>
+    <span>Take away y delivery</span>
+    <span>Barra de tragos y vinos por la noche</span>
+    <span>A metros de la Costanera</span>
+    <span>Panadería artesanal todos los días</span>
+    <span>Sandwiches de baguette, la casa de la especialidad</span>
+    <span>Take away y delivery</span>
+    <span>Barra de tragos y vinos por la noche</span>
+    <span>A metros de la Costanera</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav-sticky">
+  <div class="nav-scroll" id="navScroll">
+    <a href="#calientes" class="nav-pill active" data-target="calientes">Bebidas calientes</a>
+    <a href="#frias" class="nav-pill" data-target="frias">Bebidas frías</a>
+    <a href="#jugos" class="nav-pill" data-target="jugos">Jugos</a>
+    <a href="#bebidas" class="nav-pill" data-target="bebidas">Sin alcohol</a>
+    <a href="#brunch" class="nav-pill" data-target="brunch">Brunch</a>
+    <a href="#sandwiches" class="nav-pill" data-target="sandwiches">Sandwiches</a>
+    <a href="#panaderia" class="nav-pill" data-target="panaderia">Panadería</a>
+    <a href="#postres" class="nav-pill" data-target="postres">Postres</a>
+    <a href="#tragos" class="nav-pill" data-target="tragos">Tragos</a>
+    <a href="#vinos" class="nav-pill" data-target="vinos">Vinos</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <div class="takeaway">
+    <svg viewBox="0 0 64 64" width="52" height="52" fill="none" stroke="var(--gold-dark)" stroke-width="3" style="flex:0 0 auto">
+      <path d="M14 22h36l-3 28a6 6 0 0 1-6 5.5H23a6 6 0 0 1-6-5.5L14 22Z"/>
+      <path d="M50 26h4a7 7 0 0 1 0 14h-3"/>
+      <path d="M22 14c-1.5 2.5 1.5 3.5 0 6M32 14c-1.5 2.5 1.5 3.5 0 6M42 14c-1.5 2.5 1.5 3.5 0 6"/>
+    </svg>
+    <div class="takeaway-text">
+      <h3>¿Con apuro? Pedilo para llevar</h3>
+      <p>Café, facturas y sandwiches listos para retirar o por delivery.</p>
+      <a href="#" class="btn btn-primary" id="whatsapp-takeaway">Pedir por WhatsApp</a>
+    </div>
+  </div>
+
+  <section class="menu-section" id="calientes">
+    <div class="section-head">
+      <h2>Bebidas calientes</h2>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/espresso.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/espresso.jpg" alt="Espresso">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Espresso</span></div>
+        <p class="item-desc">Una porción concentrada de café extraído a presión.</p>
+      </div>
+      <span class="item-price">$3.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Doble Espresso</span></div>
+        <p class="item-desc">Preparado con el doble de café en la misma extracción, conservando su intensidad y textura.</p>
+      </div>
+      <span class="item-price">$4.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Cortado</span></div>
+        <p class="item-desc">Shot de espresso con una pequeña cantidad de leche.</p>
+      </div>
+      <span class="item-price">$4.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/cafeconleche.png">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/cafeconleche.png" alt="Café con leche">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Café con leche</span></div>
+        <p class="item-desc">Shot de espresso y partes iguales de leche vaporizada.</p>
+      </div>
+      <span class="item-price">$4.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Café Irlandés</span></div>
+        <p class="item-desc">Mezcla caliente de café, whisky y azúcar, coronada con una capa de crema batida fría.</p>
+      </div>
+      <span class="item-price">$9.500</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/frapuccino.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/frapuccino.jpg" alt="Capuccino">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Capuccino</span></div>
+        <p class="item-desc">Shot de espresso con leche muy espumada, cacao y canela.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Latte</span></div>
+        <p class="item-desc">Shot de espresso y tres partes de leche.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Mocaccino</span></div>
+        <p class="item-desc">Shot de espresso, con base de salsa de chocolate y leche espumada.</p>
+      </div>
+      <span class="item-price">$5.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Chocolatada</span></div>
+        <p class="item-desc">Realizado con leche y salsa de chocolate artesanal.</p>
+      </div>
+      <span class="item-price">$3.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Submarino</span></div>
+        <p class="item-desc">Leche caliente y barra de chocolate amargo.</p>
+      </div>
+      <span class="item-price">$5.500</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/te.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/te.jpg" alt="Té negro">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Té negro</span></div>
+        <p class="item-desc">Infusión de hojas de té curadas. Opcional con leche.</p>
+      </div>
+      <span class="item-price">$3.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Mate cocido</span></div>
+        <p class="item-desc">Infusión de yerba mate, servida en taza. Opcional con leche.</p>
+      </div>
+      <span class="item-price">$3.500</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="frias">
+    <div class="section-head">
+      <h2>Bebidas frías</h2>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/frapuccino.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/frapuccino.jpg" alt="Frapuccino">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Frapuccino</span></div>
+        <p class="item-desc">Café frío licuado con hielo y leche.</p>
+      </div>
+      <span class="item-price">$8.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/matcha.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/matcha.jpg" alt="Matcha Latte">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Matcha Latte</span></div>
+        <p class="item-desc">Matcha en polvo con leche vaporizada endulzado.</p>
+      </div>
+      <span class="item-price">$8.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Iced Latte</span></div>
+        <p class="item-desc">Shot de espresso y leche fría servida sobre hielo.</p>
+      </div>
+      <span class="item-price">$7.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Iced Caramel Macchiato</span></div>
+        <p class="item-desc">Shot de espresso, leche fría, hielo y topping de caramelo.</p>
+      </div>
+      <span class="item-price">$7.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/licuado%20de%20fruta.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/licuado%20de%20fruta.jpg" alt="Licuado de fruta">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Licuado de fruta</span></div>
+        <p class="item-desc">Licuado de frutas naturales a elección (consultar disponibilidad). Podés elegirlo con leche o con agua.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/licuado%20combinado.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/licuado%20combinado.jpg" alt="Licuado de fruta combinado">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Licuado de fruta combinado</span></div>
+        <p class="item-desc">Licuado de frutas naturales combinadas a elección (consultar disponibilidad). Podés elegirlo con leche o con agua.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/blueberrylatte.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/blueberrylatte.jpg" alt="Blueberry Latte">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Blueberry Latte</span></div>
+        <p class="item-desc">Shot de espresso, frutos rojos, hielo y leche.</p>
+      </div>
+      <span class="item-price">$8.000</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="jugos">
+    <div class="section-head">
+      <h2>Jugos</h2>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/jugo%20de%20naranja%20(2).jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/jugo%20de%20naranja%20(2).jpg" alt="Jugo de naranja">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Jugo de naranja</span></div>
+        <p class="item-desc">Jugo de naranja exprimido natural.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Detox Verde</span></div>
+        <p class="item-desc">Mix de hojas verdes, manzana y un toque cítrico.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/detoxnaranja.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/detoxnaranja.jpg" alt="Detox naranja">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Detox naranja</span></div>
+        <p class="item-desc">Jugo de manzanas rojas, zanahoria, naranja, hielo y canela.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Limonada</span></div>
+        <p class="item-desc">Limón, menta, hielo y jengibre.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="bebidas">
+    <div class="section-head">
+      <h2>Sin alcohol</h2>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Agua 500ml</span></div>
+        
+      </div>
+      <span class="item-price">$2.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Coca Cola 600ml</span></div>
+        
+      </div>
+      <span class="item-price">$3.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Coca Cola Zero 600ml</span></div>
+        
+      </div>
+      <span class="item-price">$3.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Sprite 500ml</span></div>
+        
+      </div>
+      <span class="item-price">$3.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Fanta 500ml</span></div>
+        
+      </div>
+      <span class="item-price">$3.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Baggio 200ml</span></div>
+        
+      </div>
+      <span class="item-price">$800</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Baggio 1L</span></div>
+        
+      </div>
+      <span class="item-price">Consultar</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Corona 330ml</span></div>
+        
+      </div>
+      <span class="item-price">$4.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Heineken 473ml</span></div>
+        
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="brunch">
+    <div class="section-head">
+      <h2>Brunch</h2>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/avocado%20toast.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/avocado%20toast.jpg" alt="Avocado Toast">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Avocado Toast</span></div>
+        <p class="item-desc">Tostada con palta, hummus, cherrys y huevo. Opción vegana sin huevo.</p>
+      </div>
+      <span class="item-price">$7.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Mbeju tradicional</span></div>
+        <p class="item-desc">Tortilla de fécula con queso gratinado.</p>
+      </div>
+      <span class="item-price">$8.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/mbeju%20relleno.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/mbeju%20relleno.jpg" alt="Mbeju relleno">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Mbeju relleno</span></div>
+        <p class="item-desc">Tortilla rellena con queso y salame o jamón.</p>
+      </div>
+      <span class="item-price">$9.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/C%C3%A9sar%20Crispy.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/C%C3%A9sar%20Crispy.jpg" alt="César Crispy">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">César Crispy</span></div>
+        <p class="item-desc">Pollo crocante, lechuga, parmesano, crutones y aderezo césar.</p>
+      </div>
+      <span class="item-price">$7.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Manakish</span></div>
+        <p class="item-desc">Pan libanés con queso muzza y zaatar.</p>
+      </div>
+      <span class="item-price">$8.000</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="sandwiches">
+    <div class="section-head">
+      <h2>Sandwiches</h2>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/migatripleclasico.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/migatripleclasico.jpg" alt="Miga triple clásico">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Miga triple clásico</span></div>
+        <p class="item-desc">Pan de miga relleno de jamón cocido y queso danbo.</p>
+      </div>
+      <span class="item-price">$9.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/Miga%20triple%20vegetariano.png">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/Miga%20triple%20vegetariano.png" alt="Miga triple vegetariano">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Miga triple vegetariano</span></div>
+        <p class="item-desc">Queso, tomate y lechuga en pan de miga suave.</p>
+      </div>
+      <span class="item-price">$7.500</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/mediterraneo.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/mediterraneo.jpg" alt="Baguette mediterránea">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Baguette mediterránea</span></div>
+        <p class="item-desc">Jamón crudo, aceitunas, queso, cherrys salteados, rúcula y aceite de oliva.</p>
+      </div>
+      <span class="item-price">$12.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/sandwichxl.jpg,https://raw.githubusercontent.com/Cevanni/Imagenes/main/sandwichxl2.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/sandwichxl.jpg" alt="Baguette XL">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Baguette XL</span></div>
+        <p class="item-desc">Extra jamón cocido, muzzarella y mayonesa.</p>
+      </div>
+      <span class="item-price">$15.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Ciabatta de salmón</span></div>
+        <p class="item-desc">Pan briosche con salmón ahumado y huevos revueltos.</p>
+      </div>
+      <span class="item-price">$13.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/ciabattadecampo.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/ciabattadecampo.jpg" alt="Ciabatta de campo">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Ciabatta de campo</span></div>
+        <p class="item-desc">Ternera, lechuga, tomate y cebolla morada.</p>
+      </div>
+      <span class="item-price">$11.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/ciabattacesar.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/ciabattacesar.jpg" alt="Ciabatta César Crispy">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Ciabatta César Crispy</span></div>
+        <p class="item-desc">Pollo crocante, parmesano, lechuga y salsa césar.</p>
+      </div>
+      <span class="item-price">$11.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Focaccia veggie</span></div>
+        <p class="item-desc">Palta, rúcula, pepinos, hummus y semillas.</p>
+      </div>
+      <span class="item-price">$9.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/focaccia%20de%20lomo.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/focaccia%20de%20lomo.jpg" alt="Focaccia de lomo">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Focaccia de lomo</span></div>
+        <p class="item-desc">Lomo, champiñones y cebolla caramelizada.</p>
+      </div>
+      <span class="item-price">$11.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Sandwich pan árabe</span></div>
+        <p class="item-desc">Jamón y queso, salame y queso, o mortadela y queso con mayonesa de ajo.</p>
+      </div>
+      <span class="item-price">$9.000</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="panaderia">
+    <div class="section-head">
+      <h2>Panadería</h2>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/roll%20de%20chocolate.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/roll%20de%20chocolate.jpg" alt="Roll relleno">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Roll relleno</span></div>
+        <p class="item-desc">1 unidad.</p>
+      </div>
+      <span class="item-price">$3.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/medialunas.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/medialunas.jpg" alt="Medialunas dulces">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Medialunas dulces</span></div>
+        <p class="item-desc">2 unidades.</p>
+      </div>
+      <span class="item-price">$2.500</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/medialunas%20rellenas.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/medialunas%20rellenas.jpg" alt="Medialuna jamón y queso">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Medialuna jamón y queso</span></div>
+        <p class="item-desc">1 unidad.</p>
+      </div>
+      <span class="item-price">$2.500</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/medialunas%20rellenas.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/medialunas%20rellenas.jpg" alt="Medialuna jamón crudo y queso">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Medialuna jamón crudo y queso</span></div>
+        <p class="item-desc">1 unidad.</p>
+      </div>
+      <span class="item-price">$2.500</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/bizcochitos.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/bizcochitos.jpg" alt="Bizcochitos de jamón y queso">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Bizcochitos de jamón y queso</span></div>
+        <p class="item-desc">100 gramos.</p>
+      </div>
+      <span class="item-price">$1.500</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/chipitas.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/chipitas.jpg" alt="Chipitas">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Chipitas</span></div>
+        <p class="item-desc">6 unidades.</p>
+      </div>
+      <span class="item-price">$2.500</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/pan%20de%20queso.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/pan%20de%20queso.jpg" alt="Pan de queso">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Pan de queso</span></div>
+        <p class="item-desc">4 unidades.</p>
+      </div>
+      <span class="item-price">$3.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Brownie</span></div>
+        <p class="item-desc">1 unidad.</p>
+      </div>
+      <span class="item-price">$3.000</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="postres">
+    <div class="section-head">
+      <h2>Postres</h2>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Cheesecake</span></div>
+        <p class="item-desc">Con coulis de fruta.</p>
+      </div>
+      <span class="item-price">$6.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Tiramisú</span></div>
+        <p class="item-desc">Con café, mascarpone y cacao.</p>
+      </div>
+      <span class="item-price">$6.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Porción de cheesecake</span></div>
+        <p class="item-desc">Consultar disponibilidad.</p>
+      </div>
+      <span class="item-price">$10.500</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="tragos">
+    <div class="section-head">
+      <h2>Tragos</h2>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Gin Tonic</span></div>
+        <p class="item-desc">El clásico de siempre. Elegilo de naranja, limón y menta, maracuyá o frutos rojos.</p>
+      </div>
+      <span class="item-price">$8.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Fernet &amp; Cola</span></div>
+        <p class="item-desc">Un clásico argentino, bien frío y con mucho hielo.</p>
+      </div>
+      <span class="item-price">$5.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Aperol Spritz</span></div>
+        <p class="item-desc">El icónico italiano. Aperol, espumante, soda y rodajas de naranja.</p>
+      </div>
+      <span class="item-price">$8.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Aperol de naranja</span></div>
+        <p class="item-desc">Aperol y jugo de naranja. Fresco y cítrico.</p>
+      </div>
+      <span class="item-price">$8.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/vermu.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/vermu.jpg" alt="Vermú">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Vermú</span></div>
+        <p class="item-desc">Con hielo, un toque de soda y rodaja de cítrico.</p>
+      </div>
+      <span class="item-price">$6.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Caipirinha</span></div>
+        <p class="item-desc">Cachaça, hielo y azúcar. Elegila de limón, maracuyá, uva, frutilla o mango.</p>
+      </div>
+      <span class="item-price">$7.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Caipiroska</span></div>
+        <p class="item-desc">Vodka, hielo y azúcar. Elegila de limón, maracuyá, uva, frutilla o mango.</p>
+      </div>
+      <span class="item-price">$7.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Negroni</span></div>
+        <p class="item-desc">Partes iguales de gin, vermut rosso y campari, con twist de naranja.</p>
+      </div>
+      <span class="item-price">$7.000</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Mojito</span></div>
+        <p class="item-desc">Ron, menta fresca, azúcar, lima y un toque de soda.</p>
+      </div>
+      <span class="item-price">$7.000</span>
+    </div>
+  </section>
+
+  <section class="menu-section" id="vinos">
+    <div class="section-head">
+      <h2>Vinos</h2>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Enemigo Malbec</span></div>
+        
+      </div>
+      <span class="item-price">$22.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Escorihuela Gascón Malbec</span></div>
+        
+      </div>
+      <span class="item-price">$10.500</span>
+    </div>
+    <div class="item">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">DV Catena Cabernet-Malbec</span></div>
+        
+      </div>
+      <span class="item-price">$16.000</span>
+    </div>
+    <div class="item" data-images="https://raw.githubusercontent.com/Cevanni/Imagenes/main/cordero%20con%20piel%20de%20lobo.jpg">
+      <img class="item-thumb" src="https://raw.githubusercontent.com/Cevanni/Imagenes/main/cordero%20con%20piel%20de%20lobo.jpg" alt="Cordero con piel de lobo">
+      <div class="item-main">
+        <div class="item-name-row"><span class="item-name">Cordero con piel de lobo</span></div>
+        
+      </div>
+      <span class="item-price">$6.500</span>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">La <em>Baguettería</em></div>
+    <div class="foot-tag">Panadería, café y baguettes en la Costanera de Posadas.</div>
+
+    <div class="foot-grid">
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+        <span>C. Benavídez 1040, Cuarto Tramo de la Costanera, Posadas</span>
+      </div>
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span>Lunes a domingo, 8:00 a 13:30 y 16:00 a 21:00</span>
+      </div>
+      <div>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5a2 2 0 0 1 2-2h3l2 5-2 1a11 11 0 0 0 6 6l1-2 5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 5Z"/></svg>
+        <span>+54 9 3765 22-8808</span>
+      </div>
+    </div>
+
+    <div class="social-row">
+      <a href="https://www.instagram.com/labaguetteria.posadas/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg>
+      </a>
+      <a href="#" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21l1.4-4.2A8.5 8.5 0 1 1 8 19.5L3 21Z"/></svg>
+      </a>
+      <a href="#" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2a1 1 0 0 1 1-1Z"/></svg>
+      </a>
+    </div>
+
+    <div class="foot-bottom">Menú digital de La Baguettería · actualizado hoy</div>
+  </div>
+</footer>
+
+<div class="float-actions">
+  <a href="#" class="fab" id="whatsapp-fab">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 21l1.4-4.2A8.5 8.5 0 1 1 8 19.5L3 21Z" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    Pedir
+  </a>
+  <button class="fab secondary" id="share-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.8 15.8 6.4M8.2 13.2l7.6 4.4"/></svg>
+    Compartir
+  </button>
+</div>
+
+<div class="toast" id="toast">Enlace copiado</div>
+
+<!-- PRODUCT MODAL -->
+<div class="product-modal" id="productModal">
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal-sheet">
+    <button class="modal-close" id="modalClose" aria-label="Cerrar">&times;</button>
+    <div class="modal-gallery" id="modalGallery"></div>
+    <div class="modal-dots" id="modalDots"></div>
+    <div class="modal-info">
+      <span class="kicker" id="modalKicker"></span>
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-price" id="modalPrice"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // WhatsApp links
+  const waLink = "https://wa.me/5493765228808?text=" + encodeURIComponent("Hola! Quiero hacer un pedido 🙂");
+  document.getElementById('whatsapp-hero').href = waLink;
+  document.getElementById('whatsapp-fab').href = waLink;
+  document.getElementById('whatsapp-takeaway').href = waLink;
+
+  // Sticky nav — active state on scroll
+  const sections = document.querySelectorAll('.menu-section');
+  const pills = document.querySelectorAll('.nav-pill');
+  const navScroll = document.getElementById('navScroll');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        pills.forEach(p => p.classList.toggle('active', p.dataset.target === id));
+        const activePill = document.querySelector('.nav-pill.active');
+        if (activePill) {
+          const offset = activePill.offsetLeft - 24;
+          navScroll.scrollTo({left: offset, behavior:'smooth'});
+        }
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+  sections.forEach(s => observer.observe(s));
+
+  // Share button
+  const shareBtn = document.getElementById('share-btn');
+  const toast = document.getElementById('toast');
+  shareBtn.addEventListener('click', async () => {
+    const shareData = {
+      title: 'La Baguettería — Menú',
+      text: 'Mirá el menú de La Baguettería ☕🥖',
+      url: window.location.href
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2200);
+      }
+    } catch (e) {}
+  });
+
+  // Product modal — click a product with photos to see it bigger
+  const productModal = document.getElementById('productModal');
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const modalClose = document.getElementById('modalClose');
+  const modalGallery = document.getElementById('modalGallery');
+  const modalDots = document.getElementById('modalDots');
+  const modalKicker = document.getElementById('modalKicker');
+  const modalName = document.getElementById('modalName');
+  const modalDesc = document.getElementById('modalDesc');
+  const modalPrice = document.getElementById('modalPrice');
+
+  function openProductModal(itemEl) {
+    const name = itemEl.querySelector('.item-name')?.textContent.trim() || '';
+    const desc = itemEl.querySelector('.item-desc')?.textContent.trim() || '';
+    const price = itemEl.querySelector('.item-price')?.textContent.trim() || '';
+    const section = itemEl.closest('.menu-section');
+    const category = section?.querySelector('.section-head h2')?.textContent.trim() || '';
+
+    let images = [];
+    const imagesAttr = itemEl.getAttribute('data-images');
+    if (imagesAttr) {
+      images = imagesAttr.split(',').map(s => s.trim()).filter(Boolean);
+    } else {
+      const thumb = itemEl.querySelector('.item-thumb');
+      if (thumb) images = [thumb.getAttribute('src')];
+    }
+    if (images.length === 0) return;
+
+    modalKicker.textContent = category;
+    modalName.textContent = name;
+    modalDesc.textContent = desc;
+    modalDesc.style.display = desc ? '' : 'none';
+    modalPrice.textContent = price;
+
+    modalGallery.innerHTML = images.map(src => `<img src="${src}" alt="${name}">`).join('');
+    modalDots.innerHTML = images.length > 1
+      ? images.map((_, i) => `<span class="dot${i === 0 ? ' active' : ''}"></span>`).join('')
+      : '';
+    modalGallery.scrollLeft = 0;
+
+    productModal.classList.add('open');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeProductModal() {
+    productModal.classList.remove('open');
+    document.body.classList.remove('modal-open');
+  }
+
+  document.querySelectorAll('.item').forEach(itemEl => {
+    if (itemEl.querySelector('.item-thumb') || itemEl.getAttribute('data-images')) {
+      itemEl.classList.add('has-photo');
+      itemEl.addEventListener('click', () => openProductModal(itemEl));
+    }
+  });
+
+  modalGallery.addEventListener('scroll', () => {
+    const dots = modalDots.querySelectorAll('.dot');
+    if (!dots.length) return;
+    const idx = Math.round(modalGallery.scrollLeft / modalGallery.clientWidth);
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  });
+
+  modalBackdrop.addEventListener('click', closeProductModal);
+  modalClose.addEventListener('click', closeProductModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeProductModal();
+  });
+</script>
+
+</body>
+</html>
